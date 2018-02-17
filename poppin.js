@@ -1,43 +1,43 @@
+var investment = process.argv.slice(2);
+
 var everything = {
-  fullBottles : 1,
+  fullBottles : 0,
   emptyBottles : 0,
-  caps : 4,
+  caps : 0,
   money : 0
 }
+var bottlesFromCaps = 0;
+var bottlesFromEmpties = 0;
 
 function popForCash(investment){
-  var bottles = investment / 2
+  var bottles = (investment - (investment % 2)) / 2
   everything.fullBottles = bottles
   everything.caps = bottles
   everything.money = investment
-  console.log(everything)
 
   while(everything.fullBottles > 1){
-    emptyBottles(everything.fullBottles)
-    popForCash(everything.caps)
+    popForEmpties(everything.fullBottles)
+    popForCaps(everything.caps)
   }
 }
 
-function emptyBottles(fullBottles){
+function popForEmpties(fullBottles){
   var bottles = fullBottles - (fullBottles % 2);  
   everything.fullBottles -= bottles / 2
   everything.emptyBottles += bottles
   everything.caps += bottles / 2
+  bottlesFromEmpties += bottles / 2
 }
 
 function popForCaps(caps){
 
   var bottles = caps - (caps % 4) ;
-
   everything.caps = everything.caps - bottles +(bottles / 4)
   everything.fullBottles += bottles / 4 
-//subtract caps and add full bottles
+  bottlesFromCaps += bottles / 4;
 }
+popForCash(investment)
 
+var totalBottles = everything.fullBottles + everything.emptyBottles
 
-console.log(popForCash(20))
-
-// 10 15
-// 20 35
-// 30 55
-// 40 75
+console.log(`TOTAL BOTTLES: ${totalBottles}\nREMAINING BOTTLES: ${everything.fullBottles}\nREMAINING CAPS: ${everything.caps}\nTOTAL EARNED:\n  BOTTLES: ${bottlesFromEmpties}\n  CAPS: ${bottlesFromCaps}`)
